@@ -1,0 +1,75 @@
+<ConfigurationInfo>
+
+  <!--Rally server URL or IP address-->
+  <!--e.g. https://rally1.rallydev.com/slm for Production-->
+  <RallyServerURL>https://sandbox.rallydev.com/slm</RallyServerURL>
+  
+  <!--Rally workspace admnistrator or subscription admin-->
+  <RallyUserName>user@company1.com</RallyUserName>
+  <RallyPassword>RallyPassword</RallyPassword> 
+  <RallyEncryptedPassword></RallyEncryptedPassword>  
+
+  <!--LDAP connection information-->
+  <LdapHost>host.company1.com</LdapHost>
+  <LdapPort>389</LdapPort>
+  
+  <!--User with LDAP read permissions -->
+  <LdapUserName>yourcompany\LDAPUserName</LdapUserName>
+  <LdapPassword>LdapPassword</LdapPassword>
+  <LdapEncryptedPassword></LdapEncryptedPassword>
+
+  <!--LDAP root distinguished name under which all subsequent queries are issued-->
+  <!--If domain is www.company1.com, then it might be cn=users,dc=company1,dc=com-->
+  <LdapTreeBase>cn=users,dc=company1,dc=com</LdapTreeBase>
+
+  <!---LDAP filter to define who is a Rally user in the LDAP store
+  Used for service 1 (create) & service 2 (enable/disable)
+  Example of using group membership to determine if someone is a Rally user
+  <LdapRallyAttr>memberOf</LdapRallyAttr>
+  <LdapRallyValue>CN=Users,CN=Roles,DC=rally,DC=lab</LdapRallyValue>
+   -->
+  <LdapRallyAttr>extensionAttribute1</LdapRallyAttr>
+  <LdapRallyValue>Rally</LdapRallyValue>
+
+  <!--LDAP filter for what users should be disabled in Rally-->
+  <LdapInactiveAttr>userAccountControl</LdapInactiveAttr>
+  <LdapInactiveValue>66050</LdapInactiveValue> 
+  
+  <!--Required mapping-->
+  <!--Enter LDAP attribute name between each tag. -->
+  <RallyLoginName>mail</RallyLoginName> 
+  <RallyEmailAddress>mail</RallyEmailAddress> 
+   
+  <!--Optional mapping-->
+  <!--Enter LDAP attribute name between each tag. Only used if provisioning new users in Rally -->
+  <RallyFirstName>givenname</RallyFirstName>
+  <RallyLastName>sn</RallyLastName>  
+  <RallyDisplayName>displayname</RallyDisplayName>
+  
+  <!-- Email Settings -->
+  <!-- Set EmailEnabled to TRUE and populate related fields to begin using -->
+  <EmailEnabled>false</EmailEnabled>
+  <EmailServerHost>smtp.mydomain.com</EmailServerHost>
+  <EmailServerPort>587</EmailServerPort>
+  <EmailAccountUserName>name@mydomain.com</EmailAccountUserName>
+  <EmailAccountEncryptedPassword>my_password</EmailAccountEncryptedPassword>
+  <SendEmailTo>recipient@domain.com</SendEmailTo>
+
+  <!-- Specifies how often, in minutes, to run the services defined in <ServicePriority> -->
+  <RunInterval>30</RunInterval>  
+  
+  <!-- ServicePriority identifies the services to run and the order to run 
+  Value  -  Service Name
+  LIVE MODE
+  1      - Create a new user in Rally if matches LDAP Rally filter
+  2      - Disable/enable existing Rally user if matches LDAP inactive filter
+  PREVIEW MODE
+  1p     - Service 1 preview mode.  New user login name is written to log file but user not created in Rally.
+  2p     - Service 2 preview mode.  User login name written to log file if disabled/enabled.  No users enabled or disabled.
+
+  Example 1: <ServicePriority>1p,2p</ServicePriority>
+  Example 2: <ServicePriority>2,1</ServicePriority>
+  --> 
+  <ServicePriority>1p,2p</ServicePriority>
+
+</ConfigurationInfo>
